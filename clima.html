@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://fonts.cdnfonts.com/css/ukij-chiwer-kesme" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/isle-body-personal-use" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/eirik-raude" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/tulis-yuk" rel="stylesheet">
+     
+    <title>Apy del clima</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(76, 103, 140);
+        }
+        .navbar {
+            background-color: white;
+            position: relative;
+            top: 0;
+            width: 100%;
+            margin-top: 24px;
+        }
+        .navbar-brand {
+            font-family: 'Souses', sans-serif;
+        }
+        .weather-container {
+            position: relative;
+            top: 110px;
+            background-color: rgb(145, 167, 226);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            margin: auto;
+        }
+        .btn-custom {
+            position:relative;
+            background-color: rgb(145, 167, 226);
+            color: rgb(0, 0, 0);
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .search-form {
+            position: relative;
+            top: 100px;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+  <div margin:24px></div>
+  <nav class="navbar navbar-light">
+    <div class="d-flex align-items-center">
+      
+      <img src="nube.jpg" width="40" height="40" class="d-inline-block align-top" alt="nube">
+      <a class="navbar-brand ml-2" style="font-family: 'UKIJ Chiwer Kesme', sans-serif; font-size: 25px;">Clima Actual</a>
+      <a class="navbar-brand ml-2" href="index.html" style="font-family: 'Tulis Yuk', sans-serif; color:black;">Inicio</a>
+    </div>
+  </nav>
+
+  <div class="weather-container">
+    <h1 id="Ciudad" style=" font-family: 'Isle Body PERSONAL USE', sans-serif; font-size: 45px;">Ciudad:</h1>
+    <p id="Temperatura" style="font-family: 'Eirik Raude', sans-serif; font-size: 25px;">Temperatura: 0°C</p>
+    <p id="Descripcion" style="font-family: 'Eirik Raude', sans-serif; font-size: 25px;">Descripcion: --- </p>
+  </div>
+  
+  <form class="search-form" onsubmit="fetchWeather(); return false;">
+    <div class="form-group">
+      <input type="text" id="cityInput" class="form-control" placeholder="Pais/Estado/Ciudad" style="font-family: 'Eirik Raude', sans-serif;">
+    </div>
+    <button type="submit" class="btn btn-custom" style="font-family: 'Eirik Raude', sans-serif;">Buscar</button>
+  </form>
+
+  <script>
+    const apiKey = 'ba5c6617fb2e76b9c3569c87a73480dd'; 
+
+    async function fetchWeather() {
+        const city = document.getElementById('cityInput').value;
+        if (!city) {
+            alert('Ingrese una ciudad');
+            return;
+        }
+
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=es&appid=${apiKey}`);
+        const data = await response.json();
+
+        if (data.cod === 200) {
+            document.getElementById('Ciudad').textContent = data.name;
+            document.getElementById('Temperatura').textContent = `Temperatura: ${data.main.temp}°C`;
+            document.getElementById('Descripcion').textContent = `Descripcion: ${data.weather[0].description}`;
+        } else {
+            alert('Error, vuelve a intentarlo');
+        }
+    };
+  </script>
+</body>
+</html>
+
